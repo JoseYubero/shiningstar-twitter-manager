@@ -1,0 +1,21 @@
+server:
+  port: 8100
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+
+tweet:
+  user:
+    minFollower: 1500
+  languages: es,fr,it
