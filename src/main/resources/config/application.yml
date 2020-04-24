@@ -19,3 +19,6 @@ tweet:
   user:
     minFollower: 1500
   languages: es,fr,it
+  hashtag:
+    moreUsed:
+      max: 2

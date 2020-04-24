@@ -1,6 +1,7 @@
 package com.shiningstar.twitter.service;
 
 import com.shiningstar.twitter.domain.entity.Hashtag;
+import com.shiningstar.twitter.domain.model.HashtagMoreUsed;
 import com.shiningstar.twitter.domain.model.Tweet;
 import com.shiningstar.twitter.domain.repository.HashtagRepository;
 import com.shiningstar.twitter.domain.repository.PlaceRepository;
@@ -32,6 +33,9 @@ public class TweetPersistenceService {
     @Value("#{'${tweet.languages}'.split(',')}")
     private List<String> tweetLanguagesList;
 
+    @Value("${tweet.hashtag.moreUsed.max:10}")
+    private Integer maxHashtagMoreUsed;
+
     @Autowired
     public TweetPersistenceService(final TweetRepository tweetRepository,
                                    final UserRepository userRepository,
@@ -48,8 +52,12 @@ public class TweetPersistenceService {
     public boolean persistTweet(final Tweet tweet) {
         if (validateTweetToPersist(tweet)) {
             com.shiningstar.twitter.domain.entity.Tweet entityTweet = tweetMapper.convertTweetModelToEntity(tweet);
-            userRepository.save(entityTweet.getUser());
-            placeRepository.save(entityTweet.getPlace());
+            if (userRepository.findById(entityTweet.getUser().getId()) == null) {
+                userRepository.save(entityTweet.getUser());
+            }
+            if (placeRepository.findById(entityTweet.getPlace().getId()) == null) {
+                placeRepository.save(entityTweet.getPlace());
+            }
             com.shiningstar.twitter.domain.entity.Tweet saveTweet = tweetRepository.save(entityTweet);
             for (Hashtag hashtag: entityTweet.getHashtags()) {
                 hashtag.setTweet(saveTweet);
@@ -91,5 +99,12 @@ public class TweetPersistenceService {
         entityTweet.setValidated(true);
         com.shiningstar.twitter.domain.entity.Tweet savedTweet = tweetRepository.save(entityTweet);
         return (entityTweet.getValidated().equals(savedTweet.getValidated()));
+    }
+
+    public List<HashtagMoreUsed> searchHashtagMoreUsed () {
+        List<com.shiningstar.twitter.domain.model.HashtagMoreUsed> hashtagMoreUsedList =
+                hashtagRepository.findHashtagMoreUsed();
+
+        return hashtagMoreUsedList.stream().limit(maxHashtagMoreUsed).collect(Collectors.toList());
     }
 }

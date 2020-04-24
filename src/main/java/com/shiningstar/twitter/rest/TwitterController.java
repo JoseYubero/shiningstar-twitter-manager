@@ -1,5 +1,6 @@
 package com.shiningstar.twitter.rest;
 
+import com.shiningstar.twitter.domain.model.HashtagMoreUsed;
 import com.shiningstar.twitter.domain.model.Tweet;
 import com.shiningstar.twitter.service.TweetPersistenceService;
 import io.swagger.annotations.Api;
@@ -104,6 +105,22 @@ public class TwitterController {
             } else {
                 responseEntity = new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_MODIFIED);
             }
+        } catch (Exception e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
+        return responseEntity;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "endpoint for search hashtag more used", notes = "endpoint for search hashtag more used")
+    @ApiResponses({ @ApiResponse(code = HTTP_OK, message = "Successfully response"),
+                    @ApiResponse(code = HTTP_SERVICE_UNAVAILABLE, message = "Not Available, return empty ResponseEntity") })
+    @GetMapping(path = "api/search/hashtagMoreUsed", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<HashtagMoreUsed>> searchHashtagMoreUsed() {
+        ResponseEntity<List<HashtagMoreUsed>> responseEntity;
+        try {
+            List<HashtagMoreUsed> HashtagMoreUsedList = tweetPersistenceService.searchHashtagMoreUsed();
+            responseEntity = new ResponseEntity<>(HashtagMoreUsedList, HttpStatus.OK);
         } catch (Exception e) {
             responseEntity = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
