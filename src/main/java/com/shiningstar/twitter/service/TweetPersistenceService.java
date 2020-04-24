@@ -1,6 +1,8 @@
 package com.shiningstar.twitter.service;
 
+import com.shiningstar.twitter.domain.entity.Hashtag;
 import com.shiningstar.twitter.domain.model.Tweet;
+import com.shiningstar.twitter.domain.repository.HashtagRepository;
 import com.shiningstar.twitter.domain.repository.PlaceRepository;
 import com.shiningstar.twitter.domain.repository.TweetRepository;
 import com.shiningstar.twitter.domain.repository.UserRepository;
@@ -20,6 +22,7 @@ public class TweetPersistenceService {
     private TweetRepository tweetRepository;
     private UserRepository userRepository;
     private PlaceRepository placeRepository;
+    private HashtagRepository hashtagRepository;
 
     private TweetMapper tweetMapper;
 
@@ -33,10 +36,12 @@ public class TweetPersistenceService {
     public TweetPersistenceService(final TweetRepository tweetRepository,
                                    final UserRepository userRepository,
                                    final PlaceRepository placeRepository,
+                                   final HashtagRepository hashtagRepository,
                                    final TweetMapper tweetMapper) {
         this.tweetRepository = tweetRepository;
         this.userRepository = userRepository;
         this.placeRepository = placeRepository;
+        this.hashtagRepository = hashtagRepository;
         this.tweetMapper = tweetMapper;
     }
 
@@ -45,7 +50,11 @@ public class TweetPersistenceService {
             com.shiningstar.twitter.domain.entity.Tweet entityTweet = tweetMapper.convertTweetModelToEntity(tweet);
             userRepository.save(entityTweet.getUser());
             placeRepository.save(entityTweet.getPlace());
-            tweetRepository.save(entityTweet);
+            com.shiningstar.twitter.domain.entity.Tweet saveTweet = tweetRepository.save(entityTweet);
+            for (Hashtag hashtag: entityTweet.getHashtags()) {
+                hashtag.setTweet(saveTweet);
+                hashtagRepository.save(hashtag);
+            }
             return true;
         }
         return false;

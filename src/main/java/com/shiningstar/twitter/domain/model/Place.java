@@ -21,8 +21,8 @@ public class Place implements Serializable {
     @JsonCreator
     public Place(@JsonProperty("id") final String id,
                  @JsonProperty("name") final String name) {
-        Assert.notNull(id, "name " + MUST_BE_NOT_NULL);
-        Assert.notNull(name, "screen_name " + MUST_BE_NOT_NULL);
+        Assert.notNull(id, "id " + MUST_BE_NOT_NULL);
+        Assert.notNull(name, "name " + MUST_BE_NOT_NULL);
 
         this.id = id;
         this.name = name;

@@ -56,5 +56,8 @@ public class Tweet implements Serializable {
     private Place place;
 
     @Setter
+    private Entities entities;
+
+    @Setter
     private Boolean validated;
 }

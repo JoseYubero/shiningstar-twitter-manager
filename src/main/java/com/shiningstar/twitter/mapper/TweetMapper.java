@@ -1,5 +1,7 @@
 package com.shiningstar.twitter.mapper;
 
+import com.shiningstar.twitter.domain.model.Entities;
+import com.shiningstar.twitter.domain.model.Hashtag;
 import com.shiningstar.twitter.domain.model.Place;
 import com.shiningstar.twitter.domain.model.Tweet;
 import com.shiningstar.twitter.domain.model.User;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.math.BigInteger;
+import java.util.stream.Collectors;
 
 @Component
 public class TweetMapper {
@@ -18,6 +21,9 @@ public class TweetMapper {
         entityTweet.setValidated(Boolean.FALSE);
         entityTweet.setPlace(convertPlaceModelToEntity(modelTweet.getPlace()));
         entityTweet.setUser(convertUserModelToEntity(modelTweet.getUser()));
+        if(modelTweet.getEntities() != null) {
+            entityTweet.setHashtags(modelTweet.getEntities().getHashtags().stream().map(hashtag -> convertHashTagModelToEntity(hashtag)).collect(Collectors.toList()));
+        }
         return entityTweet;
     }
 
@@ -52,6 +58,13 @@ public class TweetMapper {
         entityUser.setFollowersCount(modelUser.getFollowersCount());
         return entityUser;
     }
+    private com.shiningstar.twitter.domain.entity.Hashtag convertHashTagModelToEntity(final Hashtag modelHashtag) {
+        com.shiningstar.twitter.domain.entity.Hashtag entityHashtag = new com.shiningstar.twitter.domain.entity.Hashtag();
+        entityHashtag.setIndex_1(modelHashtag.getIndices()[0]);
+        entityHashtag.setIndex_2(modelHashtag.getIndices()[1]);
+        entityHashtag.setText(modelHashtag.getText());
+        return entityHashtag;
+    }
 
     public Tweet convertTweetEntityToModel(final com.shiningstar.twitter.domain.entity.Tweet entityTweet) {
         Tweet modelTweet = new Tweet(new BigInteger(entityTweet.getId()),
@@ -60,6 +73,8 @@ public class TweetMapper {
         modelTweet.setPlace(convertPlaceEntityToModel(entityTweet.getPlace()));
         modelTweet.setValidated(entityTweet.getValidated());
         modelTweet.setLang(entityTweet.getLang());
+        modelTweet.setEntities(new Entities());
+        modelTweet.getEntities().setHashtags(entityTweet.getHashtags().stream().map(hashtag -> convertHashTagEntityToModel(hashtag)).collect(Collectors.toList()));
         return modelTweet;
     }
 
@@ -77,5 +92,12 @@ public class TweetMapper {
         modelPlace.setCountryCode(entityPlace.getCountryCode());
         modelPlace.setCountry(entityPlace.getCountry());
         return modelPlace;
+    }
+
+    private Hashtag convertHashTagEntityToModel(final com.shiningstar.twitter.domain.entity.Hashtag entityHashtag) {
+        int[] indices = new int[2];
+        indices[0] = entityHashtag.getIndex_1();
+        indices[1] = entityHashtag.getIndex_2();
+        return new Hashtag(indices, entityHashtag.getText());
     }
 }

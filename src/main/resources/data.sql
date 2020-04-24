@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS hashtag;
 DROP TABLE IF EXISTS tweet;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS place;
@@ -31,4 +32,14 @@ CREATE TABLE tweet (
   PRIMARY KEY (id),
   FOREIGN KEY(user_id) REFERENCES user(id),
   FOREIGN KEY(place_id) REFERENCES place(id)
+);
+
+CREATE TABLE hashtag (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  index_1 INT NOT NULL,
+  index_2 INT NOT NULL,
+  text VARCHAR(4000) NOT NULL,
+  tweet_id VARCHAR(4000),
+  PRIMARY KEY (id),
+  FOREIGN KEY(tweet_id) REFERENCES tweet(id)
 );
