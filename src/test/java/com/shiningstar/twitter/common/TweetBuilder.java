@@ -107,9 +107,9 @@ public class TweetBuilder {
     }
 
     private static com.shiningstar.twitter.domain.entity.Hashtag buildEntityHashtag(final int index1,
-                                                                             final int index2,
-                                                                             final String text,
-                                                                             final com.shiningstar.twitter.domain.entity.Tweet tweet) {
+                                                                                    final int index2,
+                                                                                    final String text,
+                                                                                    final com.shiningstar.twitter.domain.entity.Tweet tweet) {
         com.shiningstar.twitter.domain.entity.Hashtag hashtag = new com.shiningstar.twitter.domain.entity.Hashtag();
         hashtag.setIndex_1(index1);
         hashtag.setIndex_2(index2);
