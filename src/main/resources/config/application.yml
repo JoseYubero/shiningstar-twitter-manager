@@ -22,3 +22,11 @@ tweet:
   hashtag:
     moreUsed:
       max: 2
+
+twitter4j:
+  debug: true
+  oauth:
+    consumerKey: bwMEjAH340
+    consumerSecret: nYnIMrqk5QYjguY3BH4CS8yoUPb8VdJz
+    accessToken: VmtrDacTJUl1M7lUyRAzL7BaqVCOVotr
+    accessTokenSecret: tM6CfOKzfUbWpXY5QqGWDnN0aHDtyS

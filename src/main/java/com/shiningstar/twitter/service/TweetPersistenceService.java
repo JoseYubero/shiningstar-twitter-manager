@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import twitter4j.Status;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class TweetPersistenceService {
     }
 
     public boolean persistTweet(final Tweet tweet) {
-        if (validateTweetToPersist(tweet)) {
+        if (validateTweetToPersist(tweet.getLang(), tweet.getUser().getFollowersCount())) {
             com.shiningstar.twitter.domain.entity.Tweet entityTweet = tweetMapper.convertTweetModelToEntity(tweet);
             if (userRepository.findById(entityTweet.getUser().getId()) == null) {
                 userRepository.save(entityTweet.getUser());
@@ -68,9 +69,9 @@ public class TweetPersistenceService {
         return false;
     }
 
-    private Boolean validateTweetToPersist(final Tweet tweet) {
-        if (tweetLanguagesList.contains(tweet.getLang()) &&
-                tweet.getUser().getFollowersCount().compareTo(minFollowers) >= 0) {
+    private Boolean validateTweetToPersist(final String tweetLang, final Integer followersCount) {
+        if (tweetLanguagesList.contains(tweetLang) &&
+                followersCount.compareTo(minFollowers) >= 0) {
             return true;
         }
         return false;
@@ -107,4 +108,24 @@ public class TweetPersistenceService {
 
         return hashtagMoreUsedList.stream().limit(maxHashtagMoreUsed).collect(Collectors.toList());
     }
+
+    public boolean persistStatus(final Status status) {
+        if (validateTweetToPersist(status.getLang(), status.getUser().getFollowersCount())) {
+            com.shiningstar.twitter.domain.entity.Tweet entityTweet = tweetMapper.convertStatusToEntity(status);
+            if (userRepository.findById(entityTweet.getUser().getId()) == null) {
+                userRepository.save(entityTweet.getUser());
+            }
+            if (placeRepository.findById(entityTweet.getPlace().getId()) == null) {
+                placeRepository.save(entityTweet.getPlace());
+            }
+            com.shiningstar.twitter.domain.entity.Tweet saveTweet = tweetRepository.save(entityTweet);
+            for (Hashtag hashtag: entityTweet.getHashtags()) {
+                hashtag.setTweet(saveTweet);
+                hashtagRepository.save(hashtag);
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

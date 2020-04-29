@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!--	<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/logs/transport/infrastructure/${instance:-}}/application.log}"/>-->
+    <property name="LOG_FILE" value="/logs/shiningstar/application.log}"/>
+    <property name="CUSTOM_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5p][%-25t][${APP_POD_NAME:-${instance:-#}}][%16X{X-B3-TraceId:-#}] [%X{custodyId:-#}] \\(%F:%L\\) - %msg%n" />
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <pattern>${CUSTOM_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <file>${LOG_FILE}</file>
+    </appender>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CUSTOM_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.netflix" level="ERROR" />
+    <logger name="org.apache.http" level="ERROR" />
+    <logger name="org.hibernate" level="ERROR" />
+    <logger name="com.shiningstar" level="DEBUG" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

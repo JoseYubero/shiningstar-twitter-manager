@@ -7,8 +7,11 @@ import com.shiningstar.twitter.domain.model.Tweet;
 import com.shiningstar.twitter.domain.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import twitter4j.HashtagEntity;
+import twitter4j.Status;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Component
@@ -99,5 +102,58 @@ public class TweetMapper {
         indices[0] = entityHashtag.getIndex_1();
         indices[1] = entityHashtag.getIndex_2();
         return new Hashtag(indices, entityHashtag.getText());
+    }
+
+    public com.shiningstar.twitter.domain.entity.Tweet convertStatusToEntity(final Status status) {
+        com.shiningstar.twitter.domain.entity.Tweet entityTweet = new com.shiningstar.twitter.domain.entity.Tweet();
+        entityTweet.setId(String.valueOf(status.getId()));
+        entityTweet.setText(status.getText());
+        entityTweet.setLang(status.getLang());
+        entityTweet.setValidated(Boolean.FALSE);
+        entityTweet.setPlace(convertPlaceToEntity(status.getPlace()));
+        entityTweet.setUser(convertUserToEntity(status.getUser()));
+        if(status.getHashtagEntities() != null) {
+            entityTweet.setHashtags(Arrays.stream(status.getHashtagEntities()).map(hashtag -> convertHashTagToEntity(hashtag)).collect(Collectors.toList()));
+        }
+        return entityTweet;
+    }
+
+    private com.shiningstar.twitter.domain.entity.Place convertPlaceToEntity(final twitter4j.Place place) {
+        com.shiningstar.twitter.domain.entity.Place entityPlace = new com.shiningstar.twitter.domain.entity.Place();
+        entityPlace.setId(place.getId());
+        entityPlace.setName(place.getName());
+
+        if (!StringUtils.isEmpty(place.getPlaceType())) {
+            entityPlace.setPlaceType(place.getPlaceType());
+        }
+        if (!StringUtils.isEmpty(place.getFullName())) {
+            entityPlace.setFullName(place.getFullName());
+        }
+        if (!StringUtils.isEmpty(place.getCountry())) {
+            entityPlace.setCountry(place.getCountry());
+        }
+        if (!StringUtils.isEmpty(place.getCountryCode())) {
+            entityPlace.setCountryCode(place.getCountryCode());
+        }
+        return entityPlace;
+    }
+
+    private com.shiningstar.twitter.domain.entity.User convertUserToEntity(final twitter4j.User user) {
+        com.shiningstar.twitter.domain.entity.User entityUser = new com.shiningstar.twitter.domain.entity.User();
+        entityUser.setId(String.valueOf(user.getId()));
+        entityUser.setName(user.getName());
+        entityUser.setScreenName(user.getScreenName());
+        if (!StringUtils.isEmpty(user.getLocation())) {
+            entityUser.setLocation(user.getLocation());
+        }
+        entityUser.setFollowersCount(user.getFollowersCount());
+        return entityUser;
+    }
+    private com.shiningstar.twitter.domain.entity.Hashtag convertHashTagToEntity(final HashtagEntity hashtagEntity) {
+        com.shiningstar.twitter.domain.entity.Hashtag entityHashtag = new com.shiningstar.twitter.domain.entity.Hashtag();
+        entityHashtag.setIndex_1(hashtagEntity.getStart());
+        entityHashtag.setIndex_2(hashtagEntity.getEnd());
+        entityHashtag.setText(hashtagEntity.getText());
+        return entityHashtag;
     }
 }

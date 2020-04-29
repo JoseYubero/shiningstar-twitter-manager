@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "fdb3eee6-f730-44f7-b70e-7da050a9be26",
+		"name": "GFI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Shiningstar",
+			"item": [
+				{
+					"name": "Shiningstar Load Tweet local",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1234567890,\n  \"id_str\": \"1234567890\",\n  \"text\": \"Una idea feliz!!\",\n  \"lang\": \"es\",\n  \"user\": {\n    \"id\": 100,\n    \"id_str\": \"100\",\n    \"name\": \"John Smith\",\n    \"screen_name\": \"Great Professor\",\n    \"location\": \"New York City\",\n    \"followers_count\": 2225\n  },\n  \"place\": {\n  \t\"id\": \"2pr4\",\n  \t\"placeType\": \"city\",\n  \t\"name\": \"New York\",\n  \t\"fullName\": \"New York City, United States\",\n  \t\"country_code\": \"us\",\n  \t\"country\": \"United States\"\n  },\n  \"entities\": {\n    \"hashtags\":\t[\n      {\"indices\": [1,4], \"text\":\"xx\"},\n      {\"indices\": [15,18], \"text\":\"xx\"},\n      {\"indices\": [25,28], \"text\":\"xx\"},\n      {\"indices\": [5,8], \"text\":\"yy\"},\n      {\"indices\": [9,12], \"text\":\"zz\"}\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8100/load",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shiningstar Load Tweet 2 local",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1234567890,\n  \"id_str\": \"1234567891\",\n  \"text\": \"Una idea feliz!!\",\n  \"lang\": \"es\",\n  \"user\": {\n    \"id\": 100,\n    \"id_str\": \"100\",\n    \"name\": \"Eric Smith\",\n    \"screen_name\": \"Mad Professor\",\n    \"location\": \"New York City\",\n    \"followers_count\": 558\n  },\n  \"place\": {\n  \t\"id\": \"2pr4\",\n  \t\"placeType\": \"city\",\n  \t\"name\": \"New York\",\n  \t\"fullName\": \"New York City, United States\",\n  \t\"country_code\": \"us\",\n  \t\"country\": \"United States\"\n  },\n  \"entities\": {\n    \"hashtags\":\t[\n      {\"indices\": [1,4], \"text\":\"xx\"},\n      {\"indices\": [5,8], \"text\":\"xy\"},\n      {\"indices\": [20,23], \"text\":\"xy\"},\n      {\"indices\": [9,12], \"text\":\"zz\"},\n      {\"indices\": [15,18], \"text\":\"zz\"}\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8100/load",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shiningstar searchTweet local",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/api/search?text=idea&userName=Smith&validated=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "idea"
+								},
+								{
+									"key": "userName",
+									"value": "Smith"
+								},
+								{
+									"key": "validated",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shiningstar searchUserTweet local",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/api/search/John Smith",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"search",
+								"John Smith"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shiningstar searchMoreUsedHashtags local",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/api/search/hashtagMoreUsed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"search",
+								"hashtagMoreUsed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shiningstar validateTweet local",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/api/validate/1234567890",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"validate",
+								"1234567890"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
